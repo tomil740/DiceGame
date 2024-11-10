@@ -1,6 +1,6 @@
 import getDiceValues from "../../domain/useCase/getDiceValues";
+import Player from "../../domain/models/Player";
 class gameVm{
-    #targetScore;
     #uiState;
 
     #setUitState;
@@ -8,7 +8,19 @@ class gameVm{
     constructor(initUiState,setUiState){
         this.#setUitState = setUiState;
         this.#uiState = initUiState;
-        this.#targetScore = 100;
+        //this.#uiState.targetScore = 100;
+    }
+
+    onStartGame(targetVal){
+        if(targetVal > 0){
+            const player1 =new Player("player1");
+            const player2 =new Player("player2");
+            //start new game,with clean data
+            this.#uiState = {...this.#uiState,targetScore: targetVal,players:[player1,player2],isP1Turn:true};
+            this.#setUitState(this.#uiState);
+        }else{
+            window.alert("target value isnt valid...");
+        }
     }
 
     /*
@@ -59,7 +71,7 @@ class gameVm{
     const playerToCheck = (isP1Play) ? 0 : 1;
     const secondPlayer = (playerToCheck != 0) ? 0 : 1;
     //do we have any finish state 
-    if(this.#uiState.players[playerToCheck].score >= this.#targetScore){
+    if(this.#uiState.players[playerToCheck].score >= this.#uiState.targetScore){
         //finished game dialog
         const sentance1  = "You win!";
         const sentance2 = "below target score";
@@ -70,7 +82,7 @@ class gameVm{
             
 
         //case 1, the player has been pass the target score
-        if(this.#uiState.players[playerToCheck].score > this.#targetScore){
+        if(this.#uiState.players[playerToCheck].score > this.#uiState.targetScore){
             player1 = {...this.#uiState.players[playerToCheck],finishLine:sentance3};
             player2 = {...this.#uiState.players[secondPlayer],finishLine:sentance1};
 
@@ -84,7 +96,13 @@ class gameVm{
     }else{
         this.#setUitState (this.#uiState);       
     }
- 
+   }
+
+   onNewGame(){
+    this.#uiState = {...this.#uiState,targetScore: -1};
+    console.log("myState",this.#uiState.targetScore);
+    this.#setUitState(this.#uiState);
+    console.log("run",this.#uiState.targetScore);
    }
 }
 
