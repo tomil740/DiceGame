@@ -18,7 +18,7 @@ function GameContainer(){
 
   return (
     <article className="gameConainer">
-        <GameControll/>
+        <GameControll onHold={()=>gameVm.onHold()} onRoll={()=>gameVm.onRoll()} dice1={gameUiState.dice1} dice2={gameUiState.dice2}/>
         <PlayerContainer player={gameUiState.player1}/>
         <PlayerContainer player={gameUiState.player2}/>
     </article>
