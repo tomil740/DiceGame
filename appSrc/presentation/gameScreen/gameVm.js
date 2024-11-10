@@ -11,7 +11,7 @@ class gameVm{
         //this.#uiState.targetScore = 100;
     }
 
-    onStartGame(targetVal){
+    onStartGame(targetVal){ 
         if(targetVal > 0){
             const player1 =new Player("player1");
             const player2 =new Player("player2");
@@ -37,7 +37,11 @@ class gameVm{
             const sum = (diceValues[2] != 0 ) ? (this.#uiState.players[playerIndex].currentVal+diceValues[2]) : 0;
             const updatePlayers = (this.#uiState.isP1Turn) ? [{...this.#uiState.players[playerIndex],currentVal:sum},this.#uiState.players[1]]
             :[this.#uiState.players[0],{...this.#uiState.players[playerIndex],currentVal:sum}];
-            this.#uiState = {...this.#uiState,players:updatePlayers,dice1:diceValues[0],dice2:diceValues[1]}
+            let passTurn = this.#uiState.isP1Turn;
+            if(sum == 0){
+                passTurn = !passTurn;
+            }
+            this.#uiState = {...this.#uiState,players:updatePlayers,dice1:diceValues[0],dice2:diceValues[1],isP1Turn:passTurn}
             this.#setUitState (this.#uiState);
         }else{
             window.alert("game is finished,press restart to play again");
