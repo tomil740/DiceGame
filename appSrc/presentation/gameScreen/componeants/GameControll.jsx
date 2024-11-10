@@ -5,7 +5,7 @@ function GameControll({onRoll,onHold,onNewGame,dice1,dice2}){
   const img2 = `../../../../assets/dice-${dice2}.png`;
   return (
     <section className="gameControl">
-        <div onClick={onNewGame} className="buttonContainer">
+        <div onClick={onNewGame} id="newGame" className="buttonContainer">
             <img src='../../../../assets/dice-cube.png' />
             <button>New game</button>
         </div>

@@ -8,11 +8,10 @@ body,html{
 
 body{
     padding: 0% 10%;
-    background-color: darkmagenta;
+    background-color: var(--md-sys-color-surface-dim);
 }
 
 article.gameConainer{
-    background-color: plum;
     height: 100vh;
     width: 100%;
     display: flex;
@@ -30,14 +29,25 @@ section.player{
     align-items: center;
     text-align: center;
     flex-direction: column;
-    background-color: red;
     padding: 8%;
+    font-size: 32px;
 }
 
 section.player div.turnScoreContainer{
-    background-color: darkmagenta;
+    background-color: var(--md-sys-color-on-tertiary-container);
     padding: 2% 16%;
     border-radius: 19px;
+    font-size: 16px;
+    position: relative;
+}
+
+section.player div.turnScoreContainer h2.finishLine{
+    position: absolute;
+    top: -90px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 26px;
 }
 
 section.gameControl{
@@ -65,8 +75,6 @@ section.gameControl div.buttonContainer{
     align-items: center;
     border-radius: 25px;
     background-color: burlywood;
-
-
 }
 
 section.gameControl div.buttonContainer img {

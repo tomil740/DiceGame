@@ -18,19 +18,18 @@ class gameVm{
         * sync the updates to our UI state 
     */
     onRoll(){
-        //get random dice values
-        const diceValues = getDiceValues(1,7);
-        const playerObj = (this.#uiState.isP1Turn) ? this.#uiState.player1 : this.#uiState.player2;
-        const sum = (diceValues[2] != 0 ) ? (playerObj.currentVal+diceValues[2]) : 0;
-        const updatedPlayer = {...playerObj,currentVal:sum};
-       
-        this.#uiState = (this.#uiState.isP1Turn) ?
-        {...this.#uiState, player1: updatedPlayer,dice1 : diceValues[0],dice2 : diceValues[1]} 
-        :
-        {...this.#uiState, player2: updatedPlayer,dice1 : diceValues[0],dice2 : diceValues[1]}
-        this.#setUitState (this.#uiState);
-        
-
+        if(typeof(this.#uiState.isP1Turn)== "boolean"){
+            //get random dice values
+            const diceValues = getDiceValues(1,7);
+            const playerIndex = (this.#uiState.isP1Turn) ? 0 : 1;
+            const sum = (diceValues[2] != 0 ) ? (this.#uiState.players[playerIndex].currentVal+diceValues[2]) : 0;
+            const updatePlayers = (this.#uiState.isP1Turn) ? [{...this.#uiState.players[playerIndex],currentVal:sum},this.#uiState.players[1]]
+            :[this.#uiState.players[0],{...this.#uiState.players[playerIndex],currentVal:sum}];
+            this.#uiState = {...this.#uiState,players:updatePlayers,dice1:diceValues[0],dice2:diceValues[1]}
+            this.#setUitState (this.#uiState);
+        }else{
+            window.alert("game is finished,press restart to play again");
+        }
     }
     /*
         onHold will apply the matched action according to the matched user turn on our data + ui
@@ -39,31 +38,53 @@ class gameVm{
         * sync the updates to our UI state 
     */
    onHold(){
-        const playerObj = (this.#uiState.isP1Turn) ? this.#uiState.player1 : this.#uiState.player2;
-        const sum = playerObj.score + playerObj.currentVal;
-        const updatedPlayer = {...playerObj,currentVal:0,score:sum};
-        //is fineshed:
-        this.#uiState = (this.#uiState.isP1Turn) ?
-        {...this.#uiState, player1: updatedPlayer , isP1Turn : (!this.#uiState.isP1Turn)} 
-        :
-        {...this.#uiState, player2: updatedPlayer, isP1Turn : (!this.#uiState.isP1Turn)}
-
-        this.#isFinished();
+        if(typeof(this.#uiState.isP1Turn)== "boolean"){
+            const playerIndex = (this.#uiState.isP1Turn) ? 0 : 1;
+            const sum = this.#uiState.players[playerIndex].score + this.#uiState.players[playerIndex].currentVal;
+            const updatePlayers = (this.#uiState.isP1Turn) ? [{...this.#uiState.players[playerIndex],score:sum,currentVal:0},this.#uiState.players[1]]
+            :[this.#uiState.players[0],{...this.#uiState.players[playerIndex],score:sum,currentVal:0}];
+            //is fineshed:
+            this.#uiState = {...this.#uiState,players:updatePlayers,isP1Turn:!(this.#uiState.isP1Turn)};
+            this.#isFinished(!this.#uiState.isP1Turn);
+        }else{
+            window.alert("game is finished,press restart to play again");
+        }
    }
 
    /*
     isFinished will check accoridng to the ui state if the game is Finished if it is
     we will update the ui accordingly with our ending dialog
    */
-   #isFinished(){
-    if(this.#uiState.player1.score >= this.#targetScore || this.#uiState.player2.score >= this.#targetScore){
+   #isFinished(isP1Play){
+    const playerToCheck = (isP1Play) ? 0 : 1;
+    const secondPlayer = (playerToCheck != 0) ? 0 : 1;
+    //do we have any finish state 
+    if(this.#uiState.players[playerToCheck].score >= this.#targetScore){
         //finished game dialog
-        console.log("game fineshed!");
+        const sentance1  = "You win!";
+        const sentance2 = "below target score";
+        const sentance3 = "passed target score";
+    
+        let player1;
+        let player2;
+            
+
+        //case 1, the player has been pass the target score
+        if(this.#uiState.players[playerToCheck].score > this.#targetScore){
+            player1 = {...this.#uiState.players[playerToCheck],finishLine:sentance3};
+            player2 = {...this.#uiState.players[secondPlayer],finishLine:sentance1};
+
+        }else {
+            player1 = {...this.#uiState.players[playerToCheck],finishLine:sentance1};
+            player2 = {...this.#uiState.players[secondPlayer],finishLine:sentance2};
+        }
+        this.#uiState = {...this.#uiState,players:[player1,player2],isP1Turn:-1};
+        this.#setUitState (this.#uiState);
+
+    }else{
+        this.#setUitState (this.#uiState);       
     }
-
-    this.#setUitState (this.#uiState);
-
-
+ 
    }
 }
 

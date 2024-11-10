@@ -1,12 +1,14 @@
 class Player{
     name;
-    score;
+    score; 
     currentVal;
+    finishLine;
 
     constructor(name){
         this.name = name;
         this.score = 0;
         this.currentVal = 0;
+        this.finishLine = "";
     }
 }
 
