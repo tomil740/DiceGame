@@ -24,8 +24,6 @@ function GameContainer(){
           <PlayerContainer player={gameUiState.players[0]} yourTurn={gameUiState.isP1Turn}/>
           <PlayerContainer player={gameUiState.players[1]} yourTurn = {(!gameUiState.isP1Turn)}/>
       </article>
-  }else{
-    a = <EntryDialog onStartGame={(a)=>gameVm.onStartGame(a)}/>;
   }
 
   return a;

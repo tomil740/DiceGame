@@ -8,7 +8,6 @@ class gameVm{
     constructor(initUiState,setUiState){
         this.#setUitState = setUiState;
         this.#uiState = initUiState;
-        //this.#uiState.targetScore = 100;
     }
 
     onStartGame(targetVal){ 
@@ -94,6 +93,7 @@ class gameVm{
             player1 = {...this.#uiState.players[playerToCheck],finishLine:sentance1};
             player2 = {...this.#uiState.players[secondPlayer],finishLine:sentance2};
         }
+        //isP1Turn:-1 flag for stoping the game,the function wont work when that is apply 
         this.#uiState = {...this.#uiState,players:[player1,player2],isP1Turn:-1};
         this.#setUitState (this.#uiState);
 

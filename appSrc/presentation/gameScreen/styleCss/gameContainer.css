@@ -102,13 +102,16 @@ article.entryDialog{
     color: var(--md-sys-color-tertiary-container);
     border-radius: 15px;
 }
-
-p.instructionsSection strong{
-    font-size: 36px;
+div.instructionsSection{
+    padding: 5% 12%;
 }
 
-p.instructionsSection{
-    padding: 5%  12%;
+div.instructionsSection p{
+    padding-left: 5%;  
+}
+
+div.instructionsSection h3{
+    font-size: 36px;
 }
 
 section.menuSec{
